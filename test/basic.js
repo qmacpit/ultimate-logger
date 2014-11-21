@@ -32,14 +32,6 @@ describe('DBusConnector suite', function(){
 
     });    
 
-    it('caller data check', function(){
-
-        var log = TestModule.info("info")
-        console.log(log)
-        TestModule.error("error")
-
-    });
-
     it('format', function(){
         var msg = "testMsg", log;
 
@@ -70,7 +62,39 @@ describe('DBusConnector suite', function(){
         log = TestModule.info(msg)     
         expect(log).to.eql(__dirname + "/testModule.js:info() " + msg)   
 
+    }); 
 
-    });    
+    it('filter', function(){
+
+        var msg = "testMsg", log;
+
+        //by method name
+        UltiLogger.setFormat("{{methodName}}: ");
+        UltiLogger.setFilter({
+            methodName: "error"
+        });
+
+        log = TestModule.error(msg)
+        expect(log).to.eql("error: " + msg)
+
+        //by method name & line
+        UltiLogger.setFormat("{{methodName}}:{{lineNumber}} ");
+        UltiLogger.setFilter({
+            methodName: "error",
+            lineNumber: 6
+        });
+
+        log = TestModule.error(msg)
+        expect(log).to.eql("error:6 " + msg)
+
+        //by module name
+        UltiLogger.setFormat("{{moduleName}} ");
+        UltiLogger.setFilter({
+            moduleName: "testModule"
+        });
+
+        log = TestModule.error(msg)        
+        expect(log).to.eql("testModule " + msg)   
+    });   
 
 })
