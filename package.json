@@ -1,0 +1,36 @@
+{
+  "name": "ultimate-logger",
+  "version": "0.0.1",
+  "description": "ultimate-logger",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test-all",
+    "blanket": { 
+      "pattern": "//^((?!(node_modules|test)).)*$/",
+      "data-cover-flags": {
+        "debug": false
+      }
+    },
+    "travis-cov": {
+      "threshold": 90
+    }
+  },
+  "dependencies": {
+
+  },
+  "devDependencies": {  
+    "expect.js": "^0.3.1"  
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fengmk2/ultimate-logger.git"
+  },
+  "keywords": [
+    "ultimate-logger"
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "author": "fengmk2 <fengmk2@gmail.com>",
+  "license": "MIT"
+}
