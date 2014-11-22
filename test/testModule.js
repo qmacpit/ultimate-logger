@@ -1,8 +1,12 @@
+var _console;
 module.exports = {
+	setConsole: function(logger){
+		_console = logger;
+	},
 	info: function(msg){
-		return console.info(msg);
+		return _console.log(msg);
 	},
 	error: function(msg){
-		return console.error(msg);
+		return _console.log(msg);
 	}
 };

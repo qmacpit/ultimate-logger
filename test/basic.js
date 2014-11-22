@@ -1,17 +1,10 @@
 var assert = require("assert"),
     expect = require('expect.js'),
     TestModule = require("./testModule.js"),
-    UltiLogger = require("../lib/ultimate-logger");
-
-
-// (function(){
-//     console.__log = console.log;
-//     console.log = function() {
-//         console.__log.apply(console, arguments);
-//         return arguments[0];
-//     }    
-// })();
-
+    _console = {
+        log: _loggingMethod
+    },
+    UltiLogger = require("../lib/ultimate-logger")(_console);
 
 function _loggingMethod(msg) {    
     return msg;
@@ -19,16 +12,14 @@ function _loggingMethod(msg) {
 
 describe('DBusConnector suite', function(){
 
-    UltiLogger.setLoggingMethod(_loggingMethod);
+    TestModule.setConsole(_console);
 
     it('methods check', function(){
 
-        expect(console.crit).to.be.ok();
-        expect(console.error).to.be.ok();
-        expect(console.warn).to.be.ok();
-        expect(console.notice).to.be.ok();
-        expect(console.info).to.be.ok();
-        expect(console.debug).to.be.ok();
+        var msg = "testMsg",
+            log = _console.log("testMsg");
+
+        expect(log).to.eql(msg);
 
     });    
 
@@ -39,10 +30,10 @@ describe('DBusConnector suite', function(){
         UltiLogger.setFormat("{{filePath}}:{{lineNumber}} ");
         
         log = TestModule.error(msg)     
-        expect(log).to.eql(__dirname + "/testModule.js:6 " + msg)       
+        expect(log).to.eql(__dirname + "/testModule.js:10 " + msg)       
 
         log = TestModule.info(msg)     
-        expect(log).to.eql(__dirname + "/testModule.js:3 " + msg)          
+        expect(log).to.eql(__dirname + "/testModule.js:7 " + msg)          
 
         //{{filePath}}
         UltiLogger.setFormat("{{filePath}}: ");
