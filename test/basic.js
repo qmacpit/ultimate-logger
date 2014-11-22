@@ -1,6 +1,8 @@
 var assert = require("assert"),
     expect = require('expect.js'),
     TestModule = require("./testModule.js"),
+    Foo = require("./foo.js"),
+    Bar = require("./bar.js"),
     _console = {
         log: _loggingMethod
     },
@@ -13,6 +15,8 @@ function _loggingMethod(msg) {
 describe('DBusConnector suite', function(){
 
     TestModule.setConsole(_console);
+    Foo.setConsole(_console);
+    Bar.setConsole(_console);
 
     it('methods check', function(){
 
@@ -55,7 +59,7 @@ describe('DBusConnector suite', function(){
 
     }); 
 
-    it('filter', function(){
+    it('basic filter', function(){
 
         var msg = "testMsg", log;
 
@@ -72,11 +76,11 @@ describe('DBusConnector suite', function(){
         UltiLogger.setFormat("{{methodName}}:{{lineNumber}} ");
         UltiLogger.setFilter({
             methodName: "error",
-            lineNumber: 6
+            lineNumber: 10
         });
 
         log = TestModule.error(msg)
-        expect(log).to.eql("error:6 " + msg)
+        expect(log).to.eql("error:10 " + msg)
 
         //by module name
         UltiLogger.setFormat("{{moduleName}} ");
@@ -86,6 +90,56 @@ describe('DBusConnector suite', function(){
 
         log = TestModule.error(msg)        
         expect(log).to.eql("testModule " + msg)   
+    });   
+
+    it('array filter', function(){
+
+        var msg = "testMsg", log;
+
+        //two modules
+        UltiLogger.setFormat("{{moduleName}}: ");
+        UltiLogger.setFilter({
+            moduleName: ["foo", "bar"]
+        });
+
+        log = TestModule.error(msg)
+        expect(log).to.not.be.ok();
+        log = Foo.foo(msg);
+        expect(log).to.eql("foo: " + msg)   
+        log = Bar.bar(msg);
+        expect(log).to.eql("bar: " + msg)   
+
+        //two methods, 1 module
+        UltiLogger.setFormat("{{moduleName}}:{{methodName}} ");
+        UltiLogger.setFilter({
+            moduleName: "testModule",
+            methodName: ["info", "error"]
+        });
+
+        log = TestModule.warn(msg)
+        expect(log).to.not.be.ok();
+        log = TestModule.info(msg);
+        expect(log).to.eql("testModule:info " + msg);
+        log = TestModule.error(msg)
+        expect(log).to.eql("testModule:error " + msg)   
+
+        //two methods, two modules
+        UltiLogger.setFormat("{{moduleName}}:{{methodName}} ");
+        UltiLogger.setFilter({
+            moduleName: ["foo", "bar"],
+            methodName: ["foo", "bar"]
+        });
+
+        log = Foo.foo(msg);
+        expect(log).to.eql("foo:foo " + msg) 
+        log = Foo.bar(msg);
+        expect(log).to.eql("foo:bar " + msg)
+        log = Bar.foo(msg);
+        expect(log).to.eql("bar:foo " + msg) 
+        log = Bar.bar(msg);
+        expect(log).to.eql("bar:bar " + msg) 
+        log = Foo.fooBar(msg);
+        expect(log).to.not.be.ok() 
     });   
 
 })

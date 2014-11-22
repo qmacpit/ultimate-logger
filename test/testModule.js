@@ -8,5 +8,8 @@ module.exports = {
 	},
 	error: function(msg){
 		return _console.log(msg);
+	},
+	warn: function(msg){
+		return _console.log(msg);
 	}
 };
