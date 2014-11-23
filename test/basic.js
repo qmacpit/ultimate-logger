@@ -170,7 +170,7 @@ describe('DBusConnector suite', function(){
         log = Bar.bar(msg)
         expect(log).to.not.be.ok();
 
-        //not method
+        //not method in a module
         UltiLogger.setFormat("{{moduleName}}:{{methodName}} ");
         UltiLogger.setFilter({
             moduleName: "foo",
@@ -179,9 +179,37 @@ describe('DBusConnector suite', function(){
         log = Foo.foo(msg)
         expect(log).to.not.be.ok();
         log = Bar.bar(msg)
-        expect(log).to.eql("bar:bar " + msg);
+        expect(log).to.not.be.ok();
         log = Foo.bar(msg)
         expect(log).to.eql("foo:bar " + msg);
+
+        //neighter method in a module
+        UltiLogger.setFilter({
+            moduleName: "foo",
+            methodName: ["!foo", "!bar"]
+        });
+        log = Foo.foo(msg)
+        expect(log).to.not.be.ok();
+        log = Foo.bar(msg)
+        expect(log).to.not.be.ok();
+        log = Foo.fooBar(msg)
+        expect(log).to.eql("foo:fooBar " + msg);
+
+        //neighter method in two module
+        UltiLogger.setFilter({
+            moduleName: ["foo", "bar"],
+            methodName: ["!foo", "!bar"]
+        });
+        log = Foo.foo(msg)
+        expect(log).to.not.be.ok();
+        log = Foo.bar(msg)
+        expect(log).to.not.be.ok();
+        log = Bar.foo(msg)
+        expect(log).to.not.be.ok();
+        log = Bar.bar(msg)
+        expect(log).to.not.be.ok();
+        log = Foo.fooBar(msg)
+        expect(log).to.eql("foo:fooBar " + msg);
 
     });
 
