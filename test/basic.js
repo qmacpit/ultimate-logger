@@ -170,6 +170,19 @@ describe('DBusConnector suite', function(){
         log = Bar.bar(msg)
         expect(log).to.not.be.ok();
 
+        //not method
+        UltiLogger.setFormat("{{moduleName}}:{{methodName}} ");
+        UltiLogger.setFilter({
+            moduleName: "foo",
+            methodName: "!foo"
+        });
+        log = Foo.foo(msg)
+        expect(log).to.not.be.ok();
+        log = Bar.bar(msg)
+        expect(log).to.eql("bar:bar " + msg);
+        log = Foo.bar(msg)
+        expect(log).to.eql("foo:bar " + msg);
+
     });
 
 })
