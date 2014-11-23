@@ -142,4 +142,34 @@ describe('DBusConnector suite', function(){
         expect(log).to.not.be.ok() 
     });   
 
+
+    it('negative filter', function(){
+
+        var msg = "testMsg", log;
+
+        //not moduleName
+        UltiLogger.setFormat("{{moduleName}}: ");
+        UltiLogger.setFilter({
+            moduleName: "!testModule"
+        });
+        log = TestModule.warn(msg)
+        expect(log).to.not.be.ok();
+        log = Foo.foo(msg)
+        expect(log).to.eql("foo: " + msg);
+        log = Bar.bar(msg)
+        expect(log).to.eql("bar: " + msg);
+
+        //neithter module
+        UltiLogger.setFilter({
+            moduleName: ["!foo", "!bar"]
+        });
+        log = TestModule.warn(msg)
+        expect(log).to.eql("testModule: " + msg);
+        log = Foo.foo(msg)
+        expect(log).to.not.be.ok();
+        log = Bar.bar(msg)
+        expect(log).to.not.be.ok();
+
+    });
+
 })
