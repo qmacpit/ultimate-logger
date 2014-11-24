@@ -1,11 +1,10 @@
 [![Build Status](https://travis-ci.org/qmacpit/ultimate-logger.svg)](https://travis-ci.org/qmacpit/ultimate-logger)
 =======
 
-![logo](https://raw.github.com/fengmk2/ultimate-logger/master/logo.png)
-
-Description
-
-* jscoverage: [100%](http://fengmk2.github.com/coverage/ultimate-logger.html)
+Ultimate-logger is a extension to javascript console.log. Features:
+- adds info about moduleName/methodName/lineNumber to the console.log printout
+- simple filtering(i.e. you can include/exclude console.log printouts from modules/methods)
+- custom console.log printout format
 
 ## Install
 
@@ -16,18 +15,121 @@ $ npm install ultimate-logger
 ## Usage
 
 ```js
-var ultimate-logger = require('ultimate-logger');
+var ultimateLogger = require('ultimate-logger');
+ultimateLogger.enable();
+```
 
-ultimate-logger.foo(function (err) {
-  
+## Use cases
+### Formatting
+Let's assume we've got a following module named "foo"....
+```js
+module.exports = {
+	bar: function(){
+		return console.log("message");
+	}
+};
+```
+Setting up ultimate-logger for logging module and metod name:
+```js
+var foo = require("foo")
+ultimateLogger.setFormat("{{moduleName}}:{{methodName}}() ");
+foo.bar();
+//console printout is "foo:bar() message"
+```
+
+Setting up ultimate-logger for logging module and module's line number:
+```js
+var foo = require("foo")
+ultimateLogger.setFormat("{{moduleName}}::{{lineNumber}} ");
+foo.bar();
+//console printout is "foo::3 message"
+```
+### Filtering
+Let's assume we've got a following modules named "foo" and "bar"....
+```js
+//foo
+module.exports = {
+  foo: function(){
+		return console.log("message");
+	}
+	bar: function(){
+		return console.log("message");
+	}
+};
+```
+```js
+//bar
+module.exports = {
+  foo: function(){
+		return console.log("message");
+	}
+	bar: function(){
+		return console.log("message");
+	}
+};
+```
+
+Setting up ultimate-logger for logging only from "foo" module
+```js
+var foo = require("foo")
+ultimateLogger.setFormat("{{moduleName}} ");
+ultimateLogger.setFilter({
+  moduleName: "foo"
 });
+foo.bar();
+//console printout is "foo message"
+bar.bar();
+//there is no console printout here
+```
+
+Setting up ultimate-logger for logging only from "foo" method
+```js
+var foo = require("foo")
+ultimateLogger.setFormat("{{moduleName}} ");
+ultimateLogger.setFilter({
+  methodName: "foo"
+});
+foo.foo();
+//console printout is "foo message"
+bar.foo();
+//console printout is "bar message"
+bar.bar();
+//there is no console printout here
+```
+
+Filter parameters can be combined. Array type is supported.
+Lets set up logging only from "foo" module methods "foo" and "bar"
+```js
+var foo = require("foo")
+ultimateLogger.setFormat("{{moduleName}} ");
+ultimateLogger.setFilter({
+  moduleName: "foo"
+  methodName: ["foo", "bar"]
+});
+foo.foo();
+//console printout is "foo message"
+foo.bar();
+//console printout is "foo message"
+```
+
+Ultimate-logger supports simple negative filtering. This is how to set it up to log all messgaegs except from "foo" module
+```js
+var foo = require("foo")
+ultimateLogger.setFormat("{{moduleName}} ");
+ultimateLogger.setFilter({
+  moduleName: "!foo"
+});
+foo.foo();
+//console printout is "foo message"
+bar.foo();
+//console printout is "bar message"
 ```
 
 ## License 
 
 (The MIT License)
 
-Copyright (c) 2013 fengmk2 &lt;fengmk2@gmail.com&gt;
+Copyright (c) 2014 qmacpit &lt;qmacpit@gmail.com&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
