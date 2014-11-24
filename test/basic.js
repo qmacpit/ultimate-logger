@@ -14,9 +14,14 @@ function _loggingMethod(msg) {
 
 describe('DBusConnector suite', function(){
 
+    UltiLogger.enable();
     TestModule.setConsole(_console);
     Foo.setConsole(_console);
     Bar.setConsole(_console);
+
+    beforeEach(function(){
+        UltiLogger.setFilter(null);
+    });
 
     it('methods check', function(){
 
@@ -25,7 +30,7 @@ describe('DBusConnector suite', function(){
 
         expect(log).to.eql(msg);
 
-    });    
+    });        
 
     it('format', function(){
         var msg = "testMsg", log;
@@ -213,4 +218,18 @@ describe('DBusConnector suite', function(){
 
     });
 
+    it('enable/disable', function(){
+
+        var msg = "testMsg", log;
+
+        UltiLogger.setFormat("{{moduleName}}: ");
+        log = Foo.foo(msg);        
+        expect(log).to.eql("foo: " + msg);
+        UltiLogger.disable();
+        log = Foo.foo(msg);        
+        expect(log).to.eql(msg);
+        UltiLogger.enable();
+        log = Foo.foo(msg);        
+        expect(log).to.eql("foo: " + msg);
+    });  
 })
