@@ -4,7 +4,7 @@
   "description": "ultimate-logger",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test",
+    "test": "./node_modules/mocha/bin/mocha",
     "blanket": {
       "pattern": "//^((?!(node_modules|test)).)*$/",
       "data-cover-flags": {
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "caller-id": "^0.1.0",
+    "mocha": "^2.0.1",
     "string": "^2.2.0"
   },
   "devDependencies": {
