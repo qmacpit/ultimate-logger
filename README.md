@@ -6,6 +6,21 @@ Ultimate-logger is a extension to javascript console.log. Features:
 - simple filtering(i.e. you can include/exclude console.log printouts from modules/methods)
 - custom console.log printout format
 
+It simply allows you to have 
+```js
+//moduleName::methodName():lineNumer message
+```
+instead of 
+```js
+//message
+```
+when calling
+```js
+console.log("message")
+```
+
+
+
 ## Install
 
 ```bash
@@ -112,7 +127,7 @@ foo.bar();
 //console printout is "foo message"
 ```
 
-Ultimate-logger supports simple negative filtering. This is how to set it up to log all messgaegs except from "foo" module
+Ultimate-logger supports simple negative filtering. This is how to set it up to log all messages except from "foo" module
 ```js
 var foo = require("foo")
 ultimateLogger.setFormat("{{moduleName}} ");
