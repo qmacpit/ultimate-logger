@@ -1,4 +1,4 @@
-ultimate-logger [![Build Status](https://secure.travis-ci.org/fengmk2/ultimate-logger.png)](http://travis-ci.org/fengmk2/ultimate-logger) [![Coverage Status](https://coveralls.io/repos/fengmk2/ultimate-logger/badge.png)](https://coveralls.io/r/fengmk2/ultimate-logger)
+[![Build Status](https://travis-ci.org/qmacpit/ultimate-logger.svg)](https://travis-ci.org/qmacpit/ultimate-logger)
 =======
 
 ![logo](https://raw.github.com/fengmk2/ultimate-logger/master/logo.png)
