@@ -19,7 +19,7 @@
     "url": "https://github.com/qmacpit/ultimate-logger"
   },
   "keywords": [
-    "ultimate-logger"
+    "ultimate-logger", "log", "logger", "logging", "console", "log"
   ],
   "engines": {
     "node": ">= 0.8.0"
