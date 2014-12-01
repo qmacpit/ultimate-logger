@@ -12,12 +12,15 @@ function _loggingMethod(msg) {
     return msg;
 }
 
-describe('DBusConnector suite', function(){
-
-    UltiLogger.enable();
-    TestModule.setConsole(_console);
-    Foo.setConsole(_console);
-    Bar.setConsole(_console);
+describe('Ultimate logger - advanced suite', function(){
+   
+    before(function(){
+        UltiLogger.enable();
+        UltiLogger.setStackLevel(1);
+        TestModule.setConsole(_console);
+        Foo.setConsole(_console);
+        Bar.setConsole(_console);
+    });
 
     beforeEach(function(){
         UltiLogger.setFilter(null);

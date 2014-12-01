@@ -1,14 +1,14 @@
 {
   "name": "ultimate-logger",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ultimate-logger",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"    
+    "test": "./node_modules/mocha/bin/mocha"
   },
   "dependencies": {
-    "caller-id": "^0.1.0",
     "mocha": "^2.0.1",
+    "stack-trace": "0.0.9",
     "string": "^2.2.0"
   },
   "devDependencies": {
@@ -19,7 +19,12 @@
     "url": "https://github.com/qmacpit/ultimate-logger"
   },
   "keywords": [
-    "ultimate-logger", "log", "logger", "logging", "console", "log"
+    "ultimate-logger",
+    "log",
+    "logger",
+    "logging",
+    "console",
+    "log"
   ],
   "engines": {
     "node": ">= 0.8.0"
