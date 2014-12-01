@@ -12,7 +12,7 @@ function _loggingMethod(msg) {
     return msg;
 }
 
-describe('Ultimate logger - advanced suite', function(){
+describe('Ultimate logger - basic suite', function(){
    
     before(function(){
         UltiLogger.enable();
